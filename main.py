@@ -1,6 +1,7 @@
 import sys
 import pygame
 import numpy as np
+import time
 
 pygame.init()
 
@@ -16,9 +17,10 @@ WIDTH, HEIGHT = 300, 300
 LINE_WIDTH = 5
 BOARD_ROWS,BOARD_COLS = 3, 3
 SQUARE_SIZE = WIDTH // BOARD_COLS
-CIRCLE_RADIUS  =SQUARE_SIZE // 3
+CIRCLE_RADIUS = SQUARE_SIZE // 3
 CIRCLE_WIDTH = 15
 CROSS_WIDTH = 25
+SLEEP_TIME = 1
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Tic Tac Toe AI')
@@ -178,11 +180,37 @@ while(True):
         if check_win(1):
             draw_figures(GREEN)
             draw_lines(GREEN)
+
+            pygame.display.update()
+
+            time.sleep(SLEEP_TIME)
+
+            restart_game()
+            game_over = False
+            player = 1
+
         elif check_win(2):
             draw_figures(RED)
             draw_lines(RED)
+
+            pygame.display.update()
+
+            time.sleep(SLEEP_TIME)
+
+            restart_game()
+            game_over = False
+            player = 1
+            
         else:
             draw_figures(GRAY)
             draw_lines(GRAY)
+
+            pygame.display.update()
+
+            time.sleep(SLEEP_TIME)
+
+            restart_game()
+            game_over = False
+            player = 1
 
     pygame.display.update()
