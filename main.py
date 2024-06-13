@@ -17,7 +17,7 @@ LINE_WIDTH = 5
 BOARD_ROWS,BOARD_COLS = 3, 3
 SQUARE_SIZE = WIDTH // BOARD_COLS
 CIRCLE_RADIUS  =SQUARE_SIZE // 3
-CIRCLE_WITH = 15
+CIRCLE_WIDTH = 15
 CROSS_WIDTH = 25
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -37,10 +37,10 @@ def draw_figures(color=WHITE):
     for row in range(BOARD_ROWS):
         for col in range(BOARD_COLS):
             if board[row][col] == 1:
-                pygame.draw.circle(screen, color, (int(col * SQUARE_SIZE * SQUARE_SIZE // 2), int(row * SQUARE_SIZE * SQUARE_SIZE // 2)), CIRCLE_RADIUS, CIRCLE_WITH)
+                pygame.draw.circle(screen, color, (int(col * SQUARE_SIZE + SQUARE_SIZE // 2), int(row * SQUARE_SIZE + SQUARE_SIZE // 2)), CIRCLE_RADIUS, CIRCLE_WIDTH)
             elif board[row][col] == 2:
-                pygame.draw.line(screen, color, (col * SQUARE_SIZE * SQUARE_SIZE // 4, row * SQUARE_SIZE * SQUARE_SIZE // 4), (col * SQUARE_SIZE + 3 * SQUARE_SIZE // 4, row * SQUARE_SIZE + 3 * SQUARE_SIZE // 4))
-                pygame.draw.line(screen, color, (col * SQUARE_SIZE * SQUARE_SIZE // 4, row * SQUARE_SIZE + 3 * SQUARE_SIZE // 4), (col * SQUARE_SIZE + 3 * SQUARE_SIZE // 4, row * SQUARE_SIZE * SQUARE_SIZE // 4))
+                pygame.draw.line(screen, color, (col * SQUARE_SIZE + SQUARE_SIZE // 4, row * SQUARE_SIZE + SQUARE_SIZE // 4), (col * SQUARE_SIZE + 3 * SQUARE_SIZE // 4, row * SQUARE_SIZE + 3 * SQUARE_SIZE // 4), CROSS_WIDTH)
+                pygame.draw.line(screen, color, (col * SQUARE_SIZE + SQUARE_SIZE // 4, row * SQUARE_SIZE + 3 * SQUARE_SIZE // 4), (col * SQUARE_SIZE + 3 * SQUARE_SIZE // 4, row * SQUARE_SIZE + SQUARE_SIZE // 4), CROSS_WIDTH)
 
 
 def mark_square(row, col, player):
@@ -54,12 +54,12 @@ def availabel_square(row, col):
 def is_board_full(check_board = board):
     for row in range(BOARD_ROWS):
         for col in range(BOARD_COLS):
-            if board[row][col] == 0:
-                return True
-    return False
+            if check_board[row][col] == 0:
+                return False
+    return True
 
 
-def check_win(player, check_board = board):
+def check_win(player, check_board=board):
     for col in range(BOARD_COLS):
         if check_board[0][col] == player and check_board[1][col] == player and check_board[2][col] == player:
             return True
@@ -82,7 +82,7 @@ def minimax(minimax_board, depth, is_maximizing):
         return float('inf')
     elif check_win(1,  minimax_board):
         return float('-inf')
-    elif check_win(minimax_board):
+    elif is_board_full(minimax_board):
         return 0
 
     if is_maximizing:
@@ -110,7 +110,7 @@ def minimax(minimax_board, depth, is_maximizing):
         return best_score
     
 def best_move():
-    best_score = 1000
+    best_score = -1000
     move = (-1, -1)
     for row in range(BOARD_ROWS):
             for col in range(BOARD_COLS):
@@ -130,10 +130,10 @@ def best_move():
 
 def restart_game():
     screen.fill(BLACK)
-    draw_lines
+    draw_lines()
     for row in range(BOARD_ROWS):
             for col in range(BOARD_COLS):
-                board[row][col] == 0
+                board[row][col] = 0
 
 draw_lines()
 
